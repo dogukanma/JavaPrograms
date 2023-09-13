@@ -42,9 +42,11 @@ public class PlaneTicket{
     } else if(age > 65){
       discountRate += 30;
     }
+    
     total = distance * pricePerKM * (100 - discountRate) / 100;
-    System.out.print("Total price => " + total);
+    System.out.print("Total price => " + (typeTicket == 1 ? total : (total * 2)));
 
+    sc.close();;
 
   }
 }
