@@ -178,6 +178,7 @@ public class MineSweeper {
       gameEnd = gameCheck();
       if (gameEnd == true) {
         System.out.println("Congratulations! You have won the game.");
+        printMap();
         return;
       }
     }
