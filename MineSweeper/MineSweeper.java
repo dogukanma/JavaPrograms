@@ -159,9 +159,9 @@ public class MineSweeper {
 
   void run() { // Runs the game.
     createMap();
-    printMap();
-    System.out.println("Map printed for control. Delete later.");
-    System.out.println("===================================");
+    // printMap();
+    // System.out.println("Map printed for control. Delete later.");
+    // System.out.println("===================================");
     boolean gameEnd = gameCheck();
     while (gameEnd == false) {
     int[] selections = getGameInputs().clone();
