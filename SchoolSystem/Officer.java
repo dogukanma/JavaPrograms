@@ -1,6 +1,6 @@
 package SchoolSystem;
 
-public class Officer extends Employee {
+public abstract class Officer extends Employee {
   private String department;
   private String workHours;
 
@@ -10,7 +10,21 @@ public class Officer extends Employee {
     this.workHours = workHours;
   }
 
-  public void work() {
-    System.out.println(this.getName() + " started working in " + department + ". Work hours is " + workHours);
+  public String getDepartment() {
+    return department;
   }
+
+  public String getWorkHours() {
+    return workHours;
+  }
+
+  public void setDepartment(String department) {
+    this.department = department;
+  }
+
+  public void setWorkHours(String workHours) {
+    this.workHours = workHours;
+  }
+
+  public abstract void work(String time);
 }

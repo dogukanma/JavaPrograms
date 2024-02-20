@@ -1,6 +1,6 @@
 package SchoolSystem;
 
-public class Employee {
+public abstract class Employee {
   private String name;
   private String email;
   private String mpno;
@@ -10,18 +10,6 @@ public class Employee {
     this.email = email;
     this.mpno = mpno;
   }
-
-  public void login() {
-    System.out.println(this.name + " logged in.");
-  };
-
-  public void logout() {
-    System.out.println(this.name + " logged out.");
-  };
-
-  public void cafeteria() {
-    System.out.println(this.name + " entered cafeteria.");
-  };
 
   public String getName() {
     return name;
@@ -47,4 +35,21 @@ public class Employee {
     this.mpno = mpno;
   }
 
+  public void login() {
+    System.out.println(this.getName() + " logged in.");
+  };
+
+  public void logout() {
+    System.out.println(this.getName() + " logged out.");
+  };
+
+  public void cafeteria() {
+    System.out.println(this.getName() + " entered cafeteria.");
+  };
+
+  public static void usersLoggedIn(Employee[] loginUsers) {
+    for (int i = 0; i < loginUsers.length; i++) {
+      loginUsers[i].login();
+    }
+  };
 }

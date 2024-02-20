@@ -1,6 +1,6 @@
 package SchoolSystem;
 
-public class Instructor extends Employee {
+public abstract class Instructor extends Employee {
   private String department;
   private String title;
 
@@ -8,10 +8,6 @@ public class Instructor extends Employee {
     super(name, email, mpno);
     this.department = department;
     this.title = title;
-  }
-
-  public void giveLecture(){
-    System.out.println(this.getName() + " gives lecture in " + department);
   }
 
   public String getDepartment() {
@@ -29,4 +25,6 @@ public class Instructor extends Employee {
   public void setTitle(String title){
     this.title = title;
   }
+
+  public abstract void giveLecture(String hours);
 }

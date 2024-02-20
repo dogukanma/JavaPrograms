@@ -1,18 +1,29 @@
 package SchoolSystem;
 
-public class Course{
-  public static void main(String[] args){
-    Instructor ins_1 = new Instructor("Jake", "jake@company.com", "1111111111", "physics", "professor");
-    Officer off_1 = new Officer("Amy", "amy@company.com", "2222222222", "security", "09:00 - 18:00");
+public class Course {
+  public static void main(String[] args) {
 
-    ins_1.login();
-    ins_1.cafeteria();
-    ins_1.setName("Raymond");
-    ins_1.logout();
+    LabAssistant sherry = new LabAssistant("Sherry", "sherry@company.com", "0000000000", "Algebra", "Phd",
+        "16:00 - 17:30");
 
-    off_1.login();
-    off_1.cafeteria();
-    off_1.setName("Kevin");
-    off_1.logout();
+    Professor terry = new Professor("Terry", "terry@company.com", "9999999999", "Computing", "Prof.", 6);
+
+    Security cheddar = new Security("Cheddar", "cheddar@company.com", "8888888888", "Outside Security", "14:00 - 23:30",
+        174);
+
+    InformationTechnologies rosa = new InformationTechnologies("Rosa", "rosa@company.com", "7777777777", "Network",
+        "11:00 - 20:00",
+        "optimization");
+
+    Employee[] loginUsers = {sherry, terry, cheddar, rosa};
+    Employee.usersLoggedIn(loginUsers);
+
+    terry.cafeteria();
+    terry.setMpno("1234567890");
+    System.out.println(terry.getName() + " has changed their mobile phone number to " + terry.getMpno());
+    terry.giveLecture("10:30");
+    rosa.work("15:20");
+    rosa.installNetwork();
+    cheddar.startPatrol();
   }
 }
