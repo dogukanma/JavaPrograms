@@ -2,6 +2,7 @@
  * @author Dogukan Unal
  * @date 23.01.2024
  * This program uses Selection Sort Algorithm to sort the custom generated array.
+ * O(n^2)
 */
 
 import java.util.Scanner;

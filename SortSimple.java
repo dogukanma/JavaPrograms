@@ -34,6 +34,7 @@ public class SortSimple{
         System.out.println("" + first + " <= " + second + " <= " + third);
       }
     }
-
+    sc.close();
   }
+  
 }

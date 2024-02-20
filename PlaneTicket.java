@@ -21,6 +21,7 @@ public class PlaneTicket{
     if(age < 1 || age > 150){
       System.out.println("Please enter your true age.");
       System.out.println("Exiting program...");
+      sc.close();
       return;
     }
     System.out.println("Enter the flight type\n1 => One-way\n2 => Round-trip ");
@@ -33,6 +34,7 @@ public class PlaneTicket{
     } else{
       System.out.println("Please enter 1 or 2.");
       System.out.println("Exiting program...");
+      sc.close();
       return;
     }
     if(age < 12){
