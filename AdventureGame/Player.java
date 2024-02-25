@@ -1,14 +1,19 @@
 package AdventureGame;
-
 import java.util.Scanner;
 
 public class Player {
   private Inventory inventory = new Inventory();
   private int damage;
   private int health;
+  private int maxHealth;
   private int money;
   private String name;
   private String charClass;
+  Scanner sc;
+
+  Player(Scanner sc){
+    this.sc = sc;
+  }
 
   public void selectChar() {
     System.out.println("");
@@ -18,41 +23,51 @@ public class Player {
     System.out.println("Hunter\t\t2\t7\t11\t\t5");
     System.out.println("Ronin\t\t3\t11\t8\t\t0");
     System.out.print("Choose your character: ");
-    Scanner sc = new Scanner(System.in);
     int num = sc.nextInt();
     sc.nextLine();
     switch (num) {
       case 1:
         this.damage = Knight.getDamage();
         this.health = Knight.getHealth();
+        this.maxHealth = Knight.getHealth();
         this.money = Knight.getMoney();
         this.charClass = "Knight";
         break;
       case 2:
         this.damage = Hunter.getDamage();
         this.health = Hunter.getHealth();
+        this.maxHealth = Hunter.getHealth();
         this.money = Hunter.getMoney();
         this.charClass = "Hunter";
         break;
       case 3:
         this.damage = Ronin.getDamage();
         this.health = Ronin.getHealth();
+        this.maxHealth = Ronin.getHealth();
         this.money = Ronin.getMoney();
         this.charClass = "Ronin";
         break;
       default:
         this.damage = Ronin.getDamage();
         this.health = Ronin.getHealth();
+        this.maxHealth = Ronin.getHealth();
         this.money = Ronin.getMoney();
         this.charClass = "Ronin";
     }
     System.out.print("Please enter your name: ");
     this.name = sc.nextLine();
-    sc.close();
   }
 
   public int getDamage() {
     return damage;
+  }
+
+  public int getMaxHealth() {
+    return maxHealth;
+  }
+
+  public void setMaxHealth(int maxHealth) {
+    this.maxHealth = maxHealth;
   }
 
   public int getHealth() {
