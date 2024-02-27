@@ -1,6 +1,6 @@
 package AdventureGame;
 
-public class SafeHouse extends SafeLocation{
+public class SafeHouse{
   private boolean onLocation = false;
   private Player player;
 

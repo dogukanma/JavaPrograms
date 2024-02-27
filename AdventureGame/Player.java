@@ -2,7 +2,7 @@ package AdventureGame;
 import java.util.Scanner;
 
 public class Player {
-  private Inventory inventory = new Inventory();
+  private Inventory inventory;
   private int damage;
   private int health;
   private int maxHealth;
@@ -11,8 +11,9 @@ public class Player {
   private String charClass;
   Scanner sc;
 
-  Player(Scanner sc){
+  Player(Scanner sc, Inventory inventory){
     this.sc = sc;
+    this.inventory = inventory;
   }
 
   public void selectChar() {

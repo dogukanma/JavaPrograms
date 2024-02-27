@@ -2,7 +2,7 @@ package AdventureGame;
 
 import java.util.Scanner;
 
-public class Shop extends SafeLocation {
+public class Shop{
   private boolean onLocation = false;
   private Player player;
   Inventory inventory;

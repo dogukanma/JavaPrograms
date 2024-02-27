@@ -8,6 +8,7 @@ public class Game {
   Inventory inventory;
   SafeHouse safeHouse;
   Scanner sc;
+  BattleLocation[] battleLocation;
 
   Game(Player player, Shop shop, Inventory inventory, SafeHouse safeHouse, Scanner sc) {
     this.player = player;
@@ -15,6 +16,7 @@ public class Game {
     this.safeHouse = safeHouse;
     this.sc = sc;
     this.inventory = inventory;
+    BattleLocation forest = new BattleLocation("Forest", false, null);
   }
 
   public void start() {
@@ -82,9 +84,19 @@ public class Game {
   public void statusInfo() {
     System.out.println("Your name: " + player.getName());
     System.out.println("Your class: " + player.getCharClass());
-    System.out.println("Your damage: " + player.getDamage());
+    System.out.println("Your damage: " + player.getDamage() + player.getInventory().getWeaponDamage());
+    System.out.println("Your defence: " + player.getInventory().getArmorDefence());
     System.out.println("Your health point: " + player.getHealth());
     System.out.println("Your money: " + player.getMoney());
+    System.out.println("Total kills: " + Enemy.getStaticOrder());
   }
 
+  public void enemyAttack(Enemy enemy) {
+    player.setHealth(player.getHealth() - (enemy.getDamage() - player.getInventory().getArmorDefence()));
+    if (player.getHealth() <= 0) {
+      System.out.println("You died to a" + (enemy.getIsBoss() ? "Boss" : "") + enemy.getName());
+      System.out.println("Press F5 to start again.");
+      return;
+    }
+  }
 }
