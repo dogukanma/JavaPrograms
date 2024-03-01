@@ -17,16 +17,7 @@ public class Game {
     this.safeHouse = safeHouse;
     this.sc = sc;
     this.inventory = inventory;
-    BattleLocation forest = new BattleLocation("Forest", false, null);
-    forest.setEnemies(forest.createEnemiesArray(forest.createBear(), 3));
-    BattleLocation cave = new BattleLocation("Cave", false, null);
-    forest.setEnemies(cave.createEnemiesArray(cave.createZombie(), 3));
-    BattleLocation dungeon = new BattleLocation("Dungeon", false, null);
-    forest.setEnemies(dungeon.createEnemiesArray(dungeon.createBear(), 3));
-    this.battleLocation = new BattleLocation[3];
-    battleLocation[0] = forest;
-    battleLocation[1] = cave;
-    battleLocation[2] = dungeon;
+    restoreLocations();
   }
 
   public void start() {
@@ -37,7 +28,7 @@ public class Game {
 
   public void gameMenu() {
     int menuChoice = 10;
-    while (menuChoice != 9) {
+    outerloop: while (menuChoice != 9) {
       System.out.println("1 - Status");
       System.out.println("2 - Inventory");
       System.out.println("3 - Go to Safe House");
@@ -64,20 +55,24 @@ public class Game {
         case 5:
           System.out.println("Entering the Forest...");
           combat(battleLocation[0].getEnemies());
-          if (gameCheck())
-            return;
+          if (player.getHealth() <= 0 || gameCheck()) {
+            break outerloop;
+          }
           break;
         case 6:
           System.out.println("Entering the Cave...");
           combat(battleLocation[1].getEnemies());
-          if (gameCheck())
-            return;
+          if (player.getHealth() <= 0 || gameCheck()) {
+            break outerloop;
+          }
           break;
         case 7:
           System.out.println("Entering the Dungeon...");
           combat(battleLocation[2].getEnemies());
-          if (gameCheck())
-            return;
+          if (player.getHealth() <= 0 || gameCheck()) {
+            // System.out.println("THE GAME ENDED SOMEHOW, NOW THE GAME MUST END.");
+            break outerloop;
+          }
           break;
         case 9:
           System.out.println("Are you sure? (Type \"Yes\" if you are.)");
@@ -87,73 +82,97 @@ public class Game {
             return;
           } else {
             System.out.println("Wrong input.");
-            gameMenu();
           }
+          break;
         default:
-          gameMenu();
+          break;
       }
     }
   }
 
   public void combat(Enemy[] enemies) {
-    System.out.println("1 - Attack\n2 - Drink Potion\n3 - Run to Safe House");
-    System.out.print("Enter your choice: ");
-    int num = sc.nextInt();
-    switch (num) {
-      case 1:
-        Enemy enemy = enemies[monsterOrder];
-        playerAttack(enemy);
-        if (enemy.getHealth() <= 0) {
-          System.out.println("Well done. You killed a " + (enemy.getIsBoss() ? "Boss " : "" + enemy.getName()));
-          System.out.println("You got " + (3 + enemy.getCurrentFightOrder()) + " golds.");
-          player.setMoney(player.getMoney() + (3 + enemy.getCurrentFightOrder()));
-          if (enemy.getCurrentFightOrder() >= 3) {
-            if (enemy.getName() == "bear") {
-              System.out.println("You got the wood essence!");
-              inventory.setWoodEssence(true);
-            } else if (enemy.getName() == "zombie") {
-              System.out.println("You got the rock essence!");
-            } else if (enemy.getName() == "minotaurus") {
-              System.out.println("You got the dark essence!");
+    outerloop: while (!gameCheck() || player.getHealth() > 0) {
+      if (player.getHealth() <= 0) {
+        // System.out.println("------THIS WORKS-------- " + player.getHealth() + " =
+        // player.getHealth()");
+        return;
+      }
+      Enemy enemy = enemies[monsterOrder];
+      System.out
+          .println(player.getName() + ": damage = " + (player.getDamage() + inventory.getWeaponDamage()) + " defence = "
+              + inventory.getArmorDefence() + " HP = " + player.getHealth());
+      System.out.println((enemy.getIsBoss() ? "Boss " : "") + enemy.getName() + "(" + enemy.getCurrentFightOrder() + ")"
+          + ": damage = " + enemy.getDamage() + " HP = "
+          + enemy.getHealth());
+      System.out.println("1 - Attack\n2 - Drink Potion\n3 - Run to Safe House");
+      System.out.print("Enter your choice: ");
+      int num = sc.nextInt();
+      switch (num) {
+        case 1:
+          playerAttack(enemy);
+          if (enemy.getHealth() <= 0) {
+            System.out.println("Well done. You killed a " + (enemy.getIsBoss() ? "Boss " : "" + enemy.getName()));
+            System.out.println("You got " + (3 + enemy.getCurrentFightOrder()) + " golds.");
+            player.setMoney(player.getMoney() + (3 + enemy.getCurrentFightOrder()));
+            if (enemy.getCurrentFightOrder() >= 3) {
+              if (enemy.getName().equals("Bear")) {
+                System.out.println("You got the wood essence!");
+                inventory.setWoodEssence(true);
+              } else if (enemy.getName().equals("Zombie")) {
+                System.out.println("You got the rock essence!");
+                inventory.setRockEssence(true);
+              } else if (enemy.getName().equals("Minotaurus")) {
+                System.out.println("You got the dark essence!");
+                inventory.setDarkEssence(true);
+              }
+              restoreLocations();
+              this.monsterOrder = 0;
+              break outerloop;
+            } else {
+              monsterOrder++;
+              break;
             }
-            monsterOrder = 0;
-            gameMenu();
-          } else {
-            monsterOrder++;
-            combat(enemies);
           }
-        }
-      case 2:
-        if (player.getHealth() < player.getMaxHealth()) {
-          player.setHealth(player.getHealth() + 5);
-          if (player.getHealth() > player.getMaxHealth()) {
-            player.setHealth(player.getMaxHealth());
+          enemyAttack(enemy);
+          break;
+        case 2:
+          if (player.getHealth() < player.getMaxHealth()) {
+            player.setHealth(player.getHealth() + 5);
+            if (player.getHealth() > player.getMaxHealth()) {
+              player.setHealth(player.getMaxHealth());
+            }
           }
-        }
-        combat(enemies);
-        break;
-      case 3:
-        safeHouse.rest();
-        BattleLocation forest = new BattleLocation("Forest", false, null);
-        forest.setEnemies(forest.createEnemiesArray(forest.createBear(), 3));
-        BattleLocation cave = new BattleLocation("Cave", false, null);
-        forest.setEnemies(cave.createEnemiesArray(cave.createZombie(), 3));
-        BattleLocation dungeon = new BattleLocation("Dungeon", false, null);
-        forest.setEnemies(dungeon.createEnemiesArray(dungeon.createBear(), 3));
-        this.battleLocation = new BattleLocation[3];
-        battleLocation[0] = forest;
-        battleLocation[1] = cave;
-        battleLocation[2] = dungeon;
-        gameMenu();
-        break;
-      default:
-        combat(enemies);
+          break;
+        case 3:
+          safeHouse.rest();
+          restoreLocations();
+          this.monsterOrder = 0;
+          break outerloop;
+        default:
+          System.out.println("Wrong choice.");
+          break;
+      }
     }
   }
 
   public void playerAttack(Enemy enemy) {
+    System.out.println(player.getName() + " attacks!");
     enemy.setHealth(enemy.getHealth() - (player.getDamage() + player.getInventory().getWeaponDamage()));
     System.out.println((enemy.getIsBoss() ? "Boss " : "") + enemy.getName() + " HP: " + enemy.getHealth());
+  }
+
+  public void restoreLocations() {
+    BattleLocation forest = new BattleLocation("Forest", false, null);
+    forest.setEnemies(forest.createBearArray(3));
+    BattleLocation cave = new BattleLocation("Cave", false, null);
+    cave.setEnemies(cave.createZombieArray(3));
+    BattleLocation dungeon = new BattleLocation("Dungeon", false, null);
+    dungeon.setEnemies(dungeon.createMinotaurusArray(3));
+    BattleLocation[] restoredLocation = new BattleLocation[3];
+    restoredLocation[0] = forest;
+    restoredLocation[1] = cave;
+    restoredLocation[2] = dungeon;
+    this.battleLocation = restoredLocation;
   }
 
   public boolean gameCheck() {
@@ -179,18 +198,18 @@ public class Game {
   public void statusInfo() {
     System.out.println("Your name: " + player.getName());
     System.out.println("Your class: " + player.getCharClass());
-    System.out.println("Your damage: " + player.getDamage() + player.getInventory().getWeaponDamage());
+    System.out.println("Your damage: " + (player.getDamage() + player.getInventory().getWeaponDamage()));
     System.out.println("Your defence: " + player.getInventory().getArmorDefence());
     System.out.println("Your health point: " + player.getHealth());
     System.out.println("Your money: " + player.getMoney());
-    System.out.println("Total kills: " + Enemy.getStaticOrder());
   }
 
   public void enemyAttack(Enemy enemy) {
+    System.out.println((enemy.getIsBoss() ? "Boss " : "") + enemy.getName() + " attacks!");
     player.setHealth(player.getHealth() - (enemy.getDamage() - player.getInventory().getArmorDefence()));
     System.out.println(player.getName() + " HP: " + player.getHealth());
     if (player.getHealth() <= 0) {
-      System.out.println("You died to a" + (enemy.getIsBoss() ? "Boss" : "") + enemy.getName());
+      System.out.println("You died to a " + (enemy.getIsBoss() ? "Boss" : "") + enemy.getName());
       System.out.println("Press F5 to start again.");
       return;
     }

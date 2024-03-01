@@ -23,6 +23,7 @@ public class Shop{
   }
 
   public void menu() {
+    System.out.println("Your have: " + player.getMoney() + " golds.");
     System.out.println("1 - Knife: Damage + 2 (5 gold)");
     System.out.println("2 - Sword: Damage + 4 (10 gold)");
     System.out.println("3 - Rifle: Damage + 8 (25 gold)");

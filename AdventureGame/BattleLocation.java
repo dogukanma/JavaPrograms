@@ -49,10 +49,28 @@ public class BattleLocation extends Location {
     return minotaurus;
   }
 
-  public Enemy[] createEnemiesArray(Enemy enemy, int enemyNumber){
+  public Enemy[] createBearArray(int enemyNumber){
     Enemy[] enemies = new Enemy[enemyNumber];
     for(int i = 0; i < enemyNumber; i ++){
-      enemies[i] = enemy;
+      enemies[i] = createBear();
+      enemies[i].setCurrentFightOrder(i + 1);
+    }
+    return enemies;
+  }
+
+  public Enemy[] createZombieArray(int enemyNumber){
+    Enemy[] enemies = new Enemy[enemyNumber];
+    for(int i = 0; i < enemyNumber; i ++){
+      enemies[i] = createZombie();
+      enemies[i].setCurrentFightOrder(i + 1);
+    }
+    return enemies;
+  }
+
+  public Enemy[] createMinotaurusArray(int enemyNumber){
+    Enemy[] enemies = new Enemy[enemyNumber];
+    for(int i = 0; i < enemyNumber; i ++){
+      enemies[i] = createMinotaurus();
       enemies[i].setCurrentFightOrder(i + 1);
     }
     return enemies;
