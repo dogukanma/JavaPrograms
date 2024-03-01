@@ -9,7 +9,6 @@ public class Inventory {
   private String armor = "none";
   private int weaponDamage = 0;
   private int armorDefence = 0;
-  private Player player;
 
   public String getArmor() {
     return armor;
