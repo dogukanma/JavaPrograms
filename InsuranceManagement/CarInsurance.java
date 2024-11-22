@@ -1,0 +1,3 @@
+class CarInsurance extends Insurance{
+  
+}

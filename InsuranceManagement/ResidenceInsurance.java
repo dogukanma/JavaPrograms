@@ -1,0 +1,3 @@
+class ResidenceInsurance extends Insurance{
+  
+}

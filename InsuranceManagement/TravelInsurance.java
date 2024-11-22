@@ -1,0 +1,3 @@
+class TravelInsurance extends Insurance{
+  
+}
