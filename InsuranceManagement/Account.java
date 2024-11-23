@@ -1,7 +1,6 @@
 import java.util.ArrayList;
-import java.util.List;
 
-abstract class Account{
+abstract class Account implements Comparable<Account>{
   private User user;
   private ArrayList<Insurance> insuranceList;
   private enum AuthenticationStatus{
@@ -22,5 +21,38 @@ abstract class Account{
       this.authStatus = AuthenticationStatus.FAIL;
       throw new InvalidAuthenticationException();
     }
+  }
+
+  boolean login_status(){
+    if(authStatus == AuthenticationStatus.FAIL){
+      return false;
+    } else{
+      return true;
+    }
+  }
+
+  void add_address(Address address){
+    AddressManager.add_address(user.getAddresses(), address);
+  }
+
+  void remove_address(Address address){
+    AddressManager.remove_address(user.getAddresses(), address);
+  }
+
+  abstract void add_insurance(Insurance insurance);
+  public User getUser() {
+    return user;
+  }
+
+  @Override
+  public int hashCode() {
+    // TODO Auto-generated method stub
+    return super.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    // TODO Auto-generated method stub
+    return super.equals(obj);
   }
 }
